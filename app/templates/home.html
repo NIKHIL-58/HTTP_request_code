@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="nav_logo"><i class="uil uil-globe"></i> MoEngage </a>
+            <ul class="nav_items">
+                <li class="nav_item"><a href="#home" class="nav_link">Home</a></li>
+                <li class="nav_item"><a href="#service" class="nav_link">Service</a></li>
+                <li class="nav_item"><a href="#about" class="nav_link">About us</a></li>
+                <li class="nav_item"><a href="#contact" class="nav_link">Contact us</a></li>
+            </ul>
+            <button class="button" id="form-open">Login</button>
+        </nav>
+    </header>
+    <!-- Message Display for Success or Error -->
+    <div id="message" class="message"></div>
+
+    <!-- Home Section -->
+    <section class="home" id="home">
+        <div class="form_container">
+            <i class="uil uil-times form_close"></i>
+
+            <!-- Login Form -->
+            <div class="form login_form">
+                <form id="loginForm">
+                    <h2>Login</h2>
+                    <div class="input_box">
+                        <input type="email" id="login_email" placeholder="Email" required>
+                        <i class="uil uil-envelope-alt email"></i>
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="login_password" placeholder="Password" required>
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                    <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check">
+                            <label for="check">Remember me</label>
+                        </span>
+                        <a href="/forgot-password" class="forgot_pw">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="button">Login Now</button>
+                    <div class="login_signup">Don't have an account? <a href="#" id="signup">Signup</a></div>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="form signup_form">
+                <form id="signupForm">
+                    <h2>Signup</h2>
+                    <div class="input_box">
+                        <i class="uil uil-user icon"></i>
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="input_box">
+                        <i class="uil uil-envelope-alt icon"></i>
+                        <input type="email" id="signup_email" placeholder="Email" required>
+                    </div>
+                    <div class="input_box">
+                        <i class="uil uil-phone icon"></i>
+                        <input type="text" id="mobile" placeholder="Mobile number" required>
+                    </div>
+                    <div class="input_box">
+                        <i class="uil uil-lock icon"></i>
+                        <input type="password" id="signup_password" placeholder="Create password" required>
+                        <i class="uil uil-eye-slash pw_hide toggle_pw"></i>
+                    </div>
+                    <div class="input_box">
+                        <i class="uil uil-lock icon"></i>
+                        <input type="password" id="confirm_password" placeholder="Confirm password" required>
+                        <i class="uil uil-eye-slash pw_hide toggle_pw"></i>
+                    </div>
+                    <button type="submit" class="button">Signup Now</button>
+                    <div class="login_signup">Already have an account? <a href="#login" id="login">Login</a></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Section -->
+    <section class="service" id="service">
+        <div class="container">
+            <h2>Our Services</h2>
+            <p>At MoEngage, we empower brands to deliver personalized customer experiences across multiple channels.</p>
+            <div class="service_items">
+                <div class="service_item">
+                    <i class="uil uil-analysis"></i>
+                    <h3>AI-Powered Campaign Optimization</h3>
+                    <p>Optimize engagement strategies and boost ROI with our Sherpa AI-powered insights.</p>
+                </div>
+                <div class="service_item">
+                    <i class="uil uil-web-grid"></i>
+                    <h3>Omnichannel Engagement</h3>
+                    <p>Engage customers seamlessly via email, push notifications, in-app messaging, and more.</p>
+                </div>
+                <div class="service_item">
+                    <i class="uil uil-chart-line"></i>
+                    <h3>Advanced Analytics</h3>
+                    <p>Gain actionable insights to refine engagement strategies and improve customer retention.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>MoEngage is an insights-driven customer engagement platform trusted by leading global brands.</p>
+            <div class="about_content">
+                <div class="about_image">
+                    <img src="/static/img/about.webp" alt="About MoEngage">
+                </div>
+                <div class="about_text">
+                    <p>We help brands analyze customer behavior, orchestrate personalized journeys, and optimize
+                        campaigns using cutting-edge AI-driven tools.</p>
+                    <p>Our platform is designed for marketers and product teams to create impactful engagement
+                        experiences across industries worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p class="intro-text">We would love to hear from you! Connect with MoEngage through any of the following
+                options.</p>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Address</h3>
+                    <p>No. 7, Subbarama Chetty Road, Basavanagudi, Bangalore - 560004</p>
+                </div>
+
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <p>+91 96060 71400</p>
+                </div>
+
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>info@moengage.com</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        </div>
+    </section>
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

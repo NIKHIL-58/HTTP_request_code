@@ -1,0 +1,8 @@
+fastapi
+unicorn
+pymongo
+motor  
+python-jose  
+passlib  
+jinja2
+fastapi-mail

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Dog Images</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url("/static/img/bg.webp");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #ffffff;
+      font-family: 'Arial', sans-serif;
+      height: 100vh;
+    }
+
+    .navbar {
+      background-color: rgba(67, 86, 106, 0.8);
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: #ffffff !important;
+    }
+
+    .navbar-brand:hover,
+    .nav-link:hover {
+      color: #000000 !important;
+    }
+
+    .dog-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dog-image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-custom {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-custom:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .results-info {
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .results-info:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary,
+    .btn-success {
+      border-radius: 30px;
+      padding: 10px 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover,
+    .btn-success:hover {
+      background-color: #007bff;
+    }
+
+    .container {
+      max-width: 1100px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .card-custom img {
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-custom .row gy-4 {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .col-md-6 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .text-muted {
+      color: #6c757d !important;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard">HTTP Dogs</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav"> <!-- Added justify-content-end -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/lists">Saved Lists</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5" id="search-page">
+    <h1 class="text-center mb-4">Search HTTP Status Dogs</h1>
+    <div class="row mb-4">
+      <div class="col-md-6 mx-auto">
+        <label for="response-code" class="form-label">Filter by Response Code:</label>
+        <input type="text" id="response-code" class="form-control" placeholder="Enter code (e.g., 203, 2xx)">
+      </div>
+    </div>
+    <div class="text-center">
+      <button id="search-btn" class="btn btn-primary">🔍 Search</button>
+    </div>
+
+    <div id="results" class="mt-4 row gy-4 justify-content-center">
+      <!-- Dynamic content will be loaded here -->
+    </div>
+
+    <div class="text-center mt-3">
+      <button id="save-list-btn" class="btn btn-success d-none">💾 Save List</button>
+    </div>
+  </div>
+
+  <div class="container mt-5" id="lists-page" style="display: none;">
+    <h1 class="text-center mb-4">All Saved Lists</h1>
+    <div id="saved-lists" class="row gy-4">
+      <!-- Dynamically populated list cards will appear here -->
+    </div>
+  </div>
+
+
+  <script>
+    const apiUrl = "http://127.0.0.1:8000";
+
+    const searchBtn = document.getElementById('search-btn');
+    const saveListBtn = document.getElementById('save-list-btn');
+    const resultsDiv = document.getElementById('results');
+    const savedListsDiv = document.getElementById('saved-lists');
+    const searchPage = document.getElementById('search-page');
+    const listsPage = document.getElementById('lists-page');
+
+    let selectedItems = []; // Array to store selected items
+
+    // Utility: Clear Results
+    const clearResults = () => {
+      resultsDiv.innerHTML = '';
+      saveListBtn.classList.add('d-none');
+      selectedItems = [];
+    };
+
+    // Handle Checkbox Change
+    const toggleSelection = (image) => {
+      if (selectedItems.includes(image)) {
+        selectedItems = selectedItems.filter(item => item !== image);
+      } else {
+        selectedItems.push(image);
+      }
+    };
+
+    // Fetch Search Results
+    searchBtn.addEventListener('click', async () => {
+      const code = document.getElementById('response-code').value.trim();
+      if (!code) return alert('Please enter a response code.');
+
+      clearResults();
+      try {
+        const response = await fetch(`${apiUrl}/search?code=${code}`);
+        const data = await response.json();
+
+        if (data.images.length > 0) {
+          data.images.forEach(image => {
+            const colDiv = document.createElement('div');
+            colDiv.classList.add('col-md-4');
+            colDiv.innerHTML = `
+            <div class="card card-custom">
+              <div class="card-body results-info">
+                <input type="checkbox" class="form-check-input mb-2" onchange="toggleSelection('${image}')">
+                <img src="${image}" class="dog-image" alt="Dog Image">
+                <p class="mt-2 text-muted">Code: ${code}</p>
+              </div>
+            </div>`;
+            resultsDiv.appendChild(colDiv);
+          });
+          saveListBtn.classList.remove('d-none');
+        } else {
+          resultsDiv.innerHTML = '<p class="text-center text-danger">No images found for the given response code.</p>';
+        }
+      } catch (error) {
+        alert('An error occurred while fetching the data.');
+      }
+    });
+
+    saveListBtn.addEventListener('click', async () => {
+      if (selectedItems.length === 0) {
+        return alert('No items selected to save.');
+      }
+
+      const listName = prompt("Enter a name for the list:");
+      if (!listName) return;
+
+      const code = document.getElementById('response-code').value.trim();
+      const data = {
+        selectedItems: selectedItems,
+        responseCode: code,
+        listName: listName
+      };
+
+      try {
+        // Log data to make sure it's correct
+        console.log("Sending data:", data);
+
+        const response = await fetch(`${apiUrl}/save`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        // Check if the response is successful
+        if (response.ok) {
+          const result = await response.json();
+        } else {
+          // Handle non-OK responses
+          const errorData = await response.json();
+          alert(`Error: ${errorData.detail || 'Something went wrong!'}`);
+        }
+      } catch (error) {
+        alert('An error occurred while saving the selected items.');
+        console.error(error);
+      }
+    });
+
+
+
+    // Navigation Handling for Saved Lists
+    document.querySelector('.nav-link[href="/lists"]').addEventListener('click', async (e) => {
+      e.preventDefault();
+      searchPage.style.display = 'none';
+      listsPage.style.display = 'block';
+
+      try {
+        const response = await fetch(`${apiUrl}/lists`);
+        const savedLists = await response.json();
+
+        savedListsDiv.innerHTML = ''; // Clear current lists
+        savedLists.forEach(list => {
+          const listCard = document.createElement('div');
+          listCard.classList.add('col-md-6');
+          listCard.innerHTML = `
+    <div class="card card-custom">
+      <div class="card-body">
+        <h5 class="card-title">${list.listName}</h5>
+        <p class="text-muted">Response Code: ${list.responseCode}</p>
+        <div class="row gy-2">
+          ${list.selectedItems.map(item => {
+            // Assuming each item in selectedItems is an image URL
+            return `<div class="col-4"><img src="${item}" class="img-fluid rounded" alt="Item Image"></div>`;
+          }).join('')}
+        </div>
+        <button class="btn btn-danger mt-3" onclick="deleteSavedList('${list.listName}')">Delete</button>
+      </div>
+    </div>`;
+
+          savedListsDiv.appendChild(listCard);
+        });
+      } catch (error) {
+        alert('Failed to load saved lists.');
+      }
+    });
+
+    // Delete a saved list
+    const deleteSavedList = async (listName) => {
+      try {
+        const response = await fetch(`${apiUrl}/lists/${listName}`, { method: 'DELETE' });
+        const result = await response.json();
+        alert(result.message); // Show confirmation message
+        loadSavedLists(); // Refresh the saved lists display
+      } catch (error) {
+        alert('An error occurred while deleting the list.');
+      }
+    };
+
+    // Function to reload the saved lists
+    const loadSavedLists = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/lists`); // Fetch all saved lists
+        const savedLists = await response.json();
+
+        savedListsDiv.innerHTML = ''; // Clear current content
+        if (savedLists.length === 0) {
+          savedListsDiv.innerHTML = `
+          <p class="text-center text-muted">No saved lists available. Start saving your favorite dogs!</p>`;
+          return;
+        }
+
+        // Loop through each saved list and create a card
+        savedLists.forEach(list => {
+          const listCard = document.createElement('div');
+          listCard.classList.add('col-md-6');
+          listCard.innerHTML = `
+          <div class="card card-custom">
+            <div class="card-body">
+              <h5 class="card-title">${list.listName}</h5>
+              <p class="text-muted">Response Code: ${list.responseCode}</p>
+              <div class="row gy-2">
+                ${list.selectedItems.map(item => `
+                  <div class="col-4">
+                    <img src="${item}" class="img-fluid rounded" alt="Item Image">
+                  </div>`).join('')}
+              </div>
+              <button class="btn btn-danger mt-3" onclick="deleteSavedList('${list.listName}')">Delete</button>
+            </div>
+          </div>`;
+          savedListsDiv.appendChild(listCard);
+        });
+      } catch (error) {
+        console.error('Error loading saved lists:', error);
+        alert('Failed to load saved lists.');
+      }
+    };
+
+
+    // Initially load the saved lists when the page loads
+    window.onload = loadSavedLists;
+
+
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+  
+  </html>

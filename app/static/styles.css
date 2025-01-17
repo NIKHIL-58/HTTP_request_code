@@ -1,0 +1,225 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  /* background: url("/static/img/bg.webp") no-repeat center center fixed; */
+  background-size: cover;
+  color: #fff;
+}
+
+
+/* Sidebar Styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px; /* Initially hidden */
+  width: 250px;
+  height: 100%;
+  background: linear-gradient(135deg, #1f2a44, #3c4b73);
+  color: white;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+nav ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+nav ul li {
+  margin: 20px 0;
+}
+
+nav ul li a {
+  color: #bdc3c7;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #34495e;
+  color: white;
+  padding-left: 15px;
+  border-radius: 5px;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  padding-bottom: 10px; /* Default bottom padding */
+  transition: margin-left 0.3s ease, padding-bottom 0.3s ease;
+}
+
+.header {
+  background-color: #ecf0f1; /* Soft background color */
+  padding: 40px 60px; /* Balanced padding for professional spacing */
+  border-radius: 15px; /* Slightly rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+  margin-bottom: 40px; /* Slightly larger gap below header */
+  max-width: 1200px; /* Restrict width for centered content */
+  width: 90%; /* Allows some responsiveness */
+  margin: 40px auto; /* Centers the header */
+}
+
+/* Header Title Styling */
+.header h1 {
+  font-size: 32px; /* Professional, larger font size */
+  color: #34495e; /* Darker shade for title */
+  font-weight: 700; /* Bold weight for emphasis */
+  margin-bottom: 10px;
+  text-align: center; /* Center-align title */
+}
+
+/* Header Subtitle Styling */
+.header p {
+  font-size: 18px;
+  color: #7f8c8d; /* Subtle color for subtitle */
+  text-align: center; /* Center-align subtitle */
+  line-height: 1.5; /* Improved readability */
+  max-width: 800px; /* Restrict width for subtitle */
+  margin: 0 auto; /* Center within header */
+}
+
+
+/* Info Cards */
+.info-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 23%;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 20px;
+  color: #34495e;
+}
+
+.stat {
+  font-size: 28px;
+  color: #2980b9;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+/* Chart Section */
+.chart {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chart h2 {
+  font-size: 24px;
+  color: #34495e;
+  margin-bottom: 20px;
+}
+
+/* Toggle Button for Sidebar */
+.sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #34495e;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Sidebar Open State for Main Content */
+.main-content.sidebar-open {
+  margin-left: 230px;
+  transition: all 0.3s ease;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .info-cards {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+/* Toggle Button Styling */
+#toggle-btn {
+  position: fixed;
+  top: 10px; /* Position from the top */
+  width: 50px; /* Width of the button */
+  height: 50px; /* Height of the button */
+  background-color: #34495e; /* Background color */
+  color: white; /* Icon color */
+  border: none; /* Remove default border */
+  border-radius: 50%; /* Makes the button circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for 3D effect */
+  z-index: 1001; /* Ensures the button is above other elements */
+  transition: background-color 0.3s ease;
+}
+
+#toggle-btn:hover {
+  background-color: #2c3e50; /* Darker shade on hover */
+}
+
+/* Icon Styling */
+#toggle-btn i {
+  font-size: 40px; /* Adjust icon size */
+}
+
